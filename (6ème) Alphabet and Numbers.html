@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>English Alphabet and Numbers - Évaluation 6e</title>
+  <style>
+    :root {
+      --ok: #2ecc71;
+      --ko: #e74c3c;
+      --moyen: #f39c12;
+      --good-bg: #d5f5e3;
+      --bad-bg: #fadbd8;
+      --na-bg: #f5b7b1;
+      --eca-bg: #f9e79f;
+      --a-bg: #d5f5e3;
+      --bg: #f7f9fb;
+      --card: #ffffff;
+      --ink: #2c3e50;
+      --line: #dcdfe6;
+      --item-w: 150px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.45;
+      padding: 16px;
+    }
+
+    h1 { margin: 0 0 8px 0; font-size: 1.6rem; color: #1a3a5c; }
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin-bottom: 18px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    .student-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px 14px;
+    }
+    .student-grid label {
+      display: flex;
+      flex-direction: column;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #34495e;
+    }
+    .student-grid input {
+      margin-top: 4px;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      font-size: 1rem;
+      background: #fafbfc;
+    }
+
+    .status-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 18px;
+      background: #ecf3fb;
+      border-radius: 8px;
+      margin-bottom: 18px;
+      border: 1px solid #d6e3f5;
+    }
+    #note-finale { font-size: 1.4rem; font-weight: 700; color: #1a3a5c; }
+    #chrono {
+      font-family: "Consolas", "Menlo", monospace;
+      font-size: 1.2rem;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 6px;
+      background: #ffffff;
+      border: 1px solid var(--line);
+    }
+    #chrono.warn { color: var(--moyen); border-color: var(--moyen); }
+    #chrono.danger { color: var(--ko); border-color: var(--ko); animation: pulse 1s infinite; }
+    @keyframes pulse {
+      0%,100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    table { width: 100%; border-collapse: collapse; }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 10px 8px;
+      text-align: center;
+      font-size: 0.95rem;
+    }
+    th { background: #ecf3fb; color: #1a3a5c; }
+    td.competence { text-align: left; font-weight: 600; }
+    td.c-na, td.c-eca, td.c-a {
+      font-weight: 700;
+      color: #555;
+      transition: background 0.2s;
+    }
+    td.c-na.active  { background: var(--na-bg);  color: #922b21; }
+    td.c-eca.active { background: var(--eca-bg); color: #7d6608; }
+    td.c-a.active   { background: var(--a-bg);   color: #196f3d; }
+
+    h2 { font-size: 1.15rem; margin: 0 0 12px 0; color: #1a3a5c; }
+    .letter-grid, .number-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(calc(var(--item-w) + 24px), 1fr));
+      gap: 10px;
+      justify-items: center;
+    }
+    .letter-cell, .number-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fafbfc;
+      width: calc(var(--item-w) + 22px);
+    }
+    .letter-cell .label, .number-cell .label {
+      font-weight: 700; color: #555; font-size: 0.9rem;
+    }
+    .btn-listen {
+      background: #3498db;
+      color: #fff;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 5px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      font-weight: 600;
+      width: var(--item-w);
+    }
+    .btn-listen:hover { background: #2874a6; }
+    .answer-input {
+      width: var(--item-w);
+      padding: 6px 8px;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      font-size: 1rem;
+      text-align: center;
+      background: #fff;
+    }
+    .answer-input.good { background: var(--good-bg); border-color: var(--ok); }
+    .answer-input.bad  { background: var(--bad-bg);  border-color: var(--ko); }
+    .number-cell .inputs {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      width: var(--item-w);
+    }
+
+    @media (max-width: 600px) {
+      :root { --item-w: 120px; }
+    }
+
+    .actions { display: flex; justify-content: center; gap: 12px; margin: 24px 0; flex-wrap: wrap; }
+    #correct-btn {
+      background: #27ae60;
+      color: #fff;
+      font-size: 1.05rem;
+      font-weight: 700;
+      padding: 12px 22px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    #correct-btn:disabled { background: #95a5a6; cursor: not-allowed; box-shadow: none; }
+    #correct-btn:hover:not(:disabled) { background: #1e8449; }
+
+    #reset-btn {
+      background: #7f8c8d;
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 12px 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    #reset-btn:hover { background: #626e6f; }
+
+    #results-section table th, #results-section table td { font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- ============== En-tête élève ============== -->
+<div class="card">
+  <h1>English Alphabet and Numbers</h1>
+  <p style="margin-top:0;color:#566573;">Évaluation de 6e — durée 30 min — 3 essais possibles.</p>
+  <div class="student-grid">
+    <label>What's your name?
+      <input type="text" id="student-name" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+    </label>
+    <label>Which class are you in?
+      <input type="text" id="student-class" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+    </label>
+    <label>What's the date today?
+      <input type="text" id="student-date" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+    </label>
+  </div>
+</div>
+
+    <!-- ============== Bandeau note + chrono ============== -->
+    <div class="status-bar">
+      <div id="note-finale">Note finale : - / 20</div>
+      <div id="chrono">Temps restant : 30:00</div>
+    </div>
+
+    <!-- ============== Tableau de compétences ============== -->
+    <div class="card">
+      <h2>Compétences évaluées</h2>
+      <table id="competency-table">
+        <thead>
+          <tr>
+            <th>Compétences évaluées</th>
+            <th>Non acquis</th>
+            <th>En cours d'acquisition</th>
+            <th>Acquis</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr id="comp-alpha">
+            <td class="competence">Alphabet : reconnaître et écrire la lettre entendue</td>
+            <td class="c-na"></td>
+            <td class="c-eca"></td>
+            <td class="c-a"></td>
+          </tr>
+          <tr id="comp-num-1">
+            <td class="competence">Nombres : Écrire le nombre en chiffres</td>
+            <td class="c-na"></td>
+            <td class="c-eca"></td>
+            <td class="c-a"></td>
+          </tr>
+          <tr id="comp-num-2">
+            <td class="competence">Nombres : Écrire le nombre en lettres</td>
+            <td class="c-na"></td>
+            <td class="c-eca"></td>
+            <td class="c-a"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ============== Activity 1 : Alphabet ============== -->
+    <div class="card">
+      <h2>Activity 1 - Alphabet</h2>
+      <p>LISTEN and WRITE the letter you hear.</p>
+      <div id="activity-alpha" class="letter-grid"></div>
+    </div>
+
+    <!-- ============== Activity 2 : Numbers ============== -->
+    <div class="card">
+      <h2>Activity 2 - Numbers</h2>
+      <p>LISTEN and WRITE the number you hear.</p>
+      <div id="activity-num" class="number-grid"></div>
+    </div>
+
+    <!-- ============== Boutons ============== -->
+    <div class="actions">
+      <button id="correct-btn" type="button">Corriger l'évaluation</button>
+      <button id="reset-btn" type="button">Réinitialiser maintenant</button>
+    </div>
+
+    <!-- ============== Historique des essais ============== -->
+    <div class="card" id="results-section" style="display:none;">
+      <h2>Historique des essais</h2>
+      <table id="results-table">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Classe</th>
+            <th>Essai 1</th>
+            <th>Essai 2</th>
+            <th>Essai 3</th>
+          </tr>
+        </thead>
+        <tbody id="results-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+<script>
+/* ================================================================
+   Évaluation English Alphabet and Numbers — 6e
+   Version corrigée + réinitialisation automatique à la fin du chrono
+   ================================================================ */
+(function () {
+  "use strict";
+
+  /* ---------------- Constantes ---------------- */
+  const MAX_USAGE     = 3;
+  const DURATION_S    = 30 * 60;   // 30 minutes
+  const WARN_REMAIN_S = 5 * 60;    // alerte quand il reste 5 min
+  const NA_THRESHOLD  = 3.5;
+  const ECA_THRESHOLD = 8.5;
+
+  /* Clés localStorage utilisées par cette page (pour un reset ciblé) */
+  const LS_KEYS = ["evalStartTime", "evalWarned", "evalOrderAlpha", "evalOrderNum", "evalAnswers"];
+
+  /* ---------------- Dictionnaire ---------------- */
+  const numbersDict = {
+    1: "one", 2: "two", 3: "three", 4: "four", 5: "five",
+    6: "six", 7: "seven", 8: "eight", 9: "nine", 10: "ten",
+    11: "eleven", 12: "twelve", 13: "thirteen", 14: "fourteen", 15: "fifteen",
+    16: "sixteen", 17: "seventeen", 18: "eighteen", 19: "nineteen", 20: "twenty",
+    30: "thirty", 40: "forty", 50: "fifty", 60: "sixty",
+    70: "seventy", 80: "eighty", 90: "ninety"
+  };
+  const numbersList = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,
+                       30,40,50,60,70,80,90];
+
+  const ALPHA_COUNT = 26;
+  const NUM_COUNT   = numbersList.length; // 27
+
+  /* ---------------- Utilitaires ---------------- */
+  function norm(s) {
+    return String(s == null ? "" : s).trim().toLowerCase();
+  }
+  /* CORRECTIF : comparaison numérique tolérante ("07" === "7") */
+  function normDigit(s) {
+    const t = norm(s);
+    if (t === "") return "";
+    if (/^\d+$/.test(t)) return String(parseInt(t, 10));
+    return t;
+  }
+  /* CORRECTIF : espaces internes multiples réduits pour les mots */
+  function normWord(s) {
+    return norm(s).replace(/\s+/g, " ");
+  }
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
+  function speakText(text, lang) {
+    if (lang == null) lang = "en-GB";
+    if (!("speechSynthesis" in window)) {
+      alert("Synthèse vocale indisponible. Texte : " + text);
+      return;
+    }
+    try {
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = lang;
+      u.rate = 0.6;
+      u.volume = 1.0;
+      window.speechSynthesis.speak(u);
+    } catch (e) {
+      alert("Synthèse vocale indisponible. Texte : " + text);
+    }
+  }
+
+  function fmtNote(n) {
+    if (!Number.isFinite(n)) n = 0;            /* CORRECTIF : garde-fou NaN */
+    const s = n.toFixed(1);
+    return s.endsWith(".0") ? s.slice(0, -2) : s;
+  }
+
+  function levelFromScore(score) {
+    if (!Number.isFinite(score)) return "NA";  /* CORRECTIF */
+    if (score < NA_THRESHOLD)  return "NA";
+    if (score < ECA_THRESHOLD) return "ECA";
+    return "A";
+  }
+  function levelLabel(level) {
+    return level === "NA"  ? "Non acquis"
+         : level === "ECA" ? "En cours d'acquisition"
+         : "Acquis";
+  }
+
+  /* ---------------- localStorage sécurisé ---------------- */
+  function lsGet(key)      { try { return localStorage.getItem(key); } catch (e) { return null; } }
+  function lsSet(key, val) { try { localStorage.setItem(key, val); } catch (e) {} }
+  function lsClearEval()   { LS_KEYS.forEach(function (k) { try { localStorage.removeItem(k); } catch (e) {} }); }
+
+  /* ---------------- DOM ---------------- */
+  const $ = function (id) { return document.getElementById(id); };
+  const noteEl      = $("note-finale");
+  const chronoEl    = $("chrono");
+  const actAlphaEl  = $("activity-alpha");
+  const actNumEl    = $("activity-num");
+  const correctBtn  = $("correct-btn");
+  const resetBtn    = $("reset-btn");
+  const resultsSec  = $("results-section");
+  const resultsBody = $("results-body");
+  const nameEl      = $("student-name");
+  const classEl     = $("student-class");
+  const dateEl      = $("student-date");
+
+  /* ---------------- État ---------------- */
+  let answerKeyAlpha = [];
+  let answerKeyNum   = [];
+  let evalStartTime  = null;
+  let evalWarned     = false;
+  let usageCount     = 0;
+  let resultats      = [];
+  let chronoTimer    = null;   /* CORRECTIF : référence annulable */
+  let timeoutHandled = false;  /* CORRECTIF : évite le double déclenchement */
+
+  /* ---------------- Activité 1 ---------------- */
+  function buildActivityAlpha(order) {
+    actAlphaEl.innerHTML = "";
+    order.forEach(function (letter, idx) {
+      const cell = document.createElement("div");
+      cell.className = "letter-cell";
+      cell.innerHTML =
+        '<span class="label">N°' + (idx + 1) + '</span>' +
+        '<button type="button" class="btn-listen" data-i="' + idx + '">🔊 Listen</button>' +
+        '<input type="text" class="answer-input" id="ans-alpha-' + idx + '" ' +
+               'maxlength="1" placeholder="?" ' +
+               'aria-label="Lettre ' + (idx + 1) + '" ' +
+               'autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />';
+      actAlphaEl.appendChild(cell);
+    });
+    actAlphaEl.querySelectorAll(".btn-listen").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        const i = parseInt(btn.getAttribute("data-i"), 10);
+        speakText(answerKeyAlpha[i], "en-GB");
+      });
+    });
+    order.forEach(function (_, idx) {
+      const inp = $("ans-alpha-" + idx);
+      if (inp) inp.addEventListener("input", function () {
+        inp.classList.remove("good", "bad");   /* CORRECTIF : retire la couleur à la ressaisie */
+        scheduleSaveAnswers();
+      });
+    });
+  }
+
+  /* ---------------- Activité 2 ---------------- */
+  function buildActivityNum(order) {
+    actNumEl.innerHTML = "";
+    order.forEach(function (num, idx) {
+      const cell = document.createElement("div");
+      cell.className = "number-cell";
+      cell.innerHTML =
+        '<span class="label">N°' + (idx + 1) + '</span>' +
+        '<button type="button" class="btn-listen" data-i="' + idx + '">🔊 Listen</button>' +
+        '<div class="inputs">' +
+          '<input type="text" class="answer-input" id="ans-num-digit-' + idx + '" ' +
+                 'inputmode="numeric" maxlength="2" placeholder="chiffres" ' +
+                 'aria-label="Nombre ' + (idx + 1) + ' en chiffres" ' +
+                 'autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />' +
+          '<input type="text" class="answer-input" id="ans-num-word-' + idx + '" ' +
+                 'maxlength="12" placeholder="lettres" ' +
+                 'aria-label="Nombre ' + (idx + 1) + ' en lettres" ' +
+                 'autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />' +
+        '</div>';
+      actNumEl.appendChild(cell);
+    });
+    actNumEl.querySelectorAll(".btn-listen").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        const i = parseInt(btn.getAttribute("data-i"), 10);
+        speakText(numbersDict[order[i]], "en-GB");
+      });
+    });
+    order.forEach(function (_, idx) {
+      [$("ans-num-digit-" + idx), $("ans-num-word-" + idx)].forEach(function (inp) {
+        if (!inp) return;
+        inp.addEventListener("input", function () {
+          inp.classList.remove("good", "bad");
+          scheduleSaveAnswers();
+        });
+      });
+    });
+  }
+
+  /* ---------------- Persistance ---------------- */
+  let saveTimer = null;
+  function scheduleSaveAnswers() {
+    if (saveTimer) clearTimeout(saveTimer);
+    saveTimer = setTimeout(saveAnswers, 200);
+  }
+  function saveAnswers() {
+    lsSet("evalAnswers", JSON.stringify({
+      name: nameEl.value,
+      cls:  classEl.value,
+      date: dateEl.value,
+      usageCount: usageCount,
+      resultats: resultats,
+      answers: collectAnswers()
+    }));
+  }
+  function collectAnswers() {
+    const o = {};
+    for (let i = 0; i < answerKeyAlpha.length; i++) {
+      const e = $("ans-alpha-" + i);
+      if (e) o["ans-alpha-" + i] = e.value;
+    }
+    for (let i = 0; i < answerKeyNum.length; i++) {
+      const d = $("ans-num-digit-" + i);
+      const w = $("ans-num-word-" + i);
+      if (d) o["ans-num-digit-" + i] = d.value;
+      if (w) o["ans-num-word-" + i] = w.value;
+    }
+    return o;
+  }
+  function applyAnswers(map) {
+    if (!map) return;
+    Object.keys(map).forEach(function (k) {
+      const e = $(k);
+      if (e) e.value = map[k];
+    });
+  }
+
+  /* ---------------- Compétences ---------------- */
+  function setCompetency(rowId, score, max) {
+    const row = $(rowId);
+    if (!row) return;
+    const level = levelFromScore(score);
+    row.querySelectorAll(".c-na, .c-eca, .c-a").forEach(function (c) {
+      c.classList.remove("active");
+      c.textContent = "";
+      c.removeAttribute("aria-label");
+    });
+    const target = row.querySelector(".c-" + level.toLowerCase());
+    if (target) {
+      target.classList.add("active");
+      target.textContent = "✔";
+      target.setAttribute("aria-label", levelLabel(level) + " : " + fmtNote(score) + " / " + max);
+    }
+  }
+
+  /* ---------------- Calcul des notes ---------------- */
+  function computeGrades() {
+    const nAlpha = answerKeyAlpha.length || 1;   /* CORRECTIF : dénominateurs dynamiques */
+    const nNum   = answerKeyNum.length   || 1;
+
+    let okAlpha = 0;
+    for (let i = 0; i < answerKeyAlpha.length; i++) {
+      const inp = $("ans-alpha-" + i);
+      if (!inp) continue;
+      const ok = norm(inp.value) === norm(answerKeyAlpha[i]);
+      if (ok) okAlpha++;
+      inp.classList.toggle("good", ok);
+      inp.classList.toggle("bad", !ok);
+    }
+
+    let okDigit = 0, okWord = 0;
+    for (let i = 0; i < answerKeyNum.length; i++) {
+      const d = $("ans-num-digit-" + i);
+      const w = $("ans-num-word-" + i);
+      if (d) {
+        const ok = normDigit(d.value) === normDigit(answerKeyNum[i].digit);
+        if (ok) okDigit++;
+        d.classList.toggle("good", ok);
+        d.classList.toggle("bad", !ok);
+      }
+      if (w) {
+        const ok = normWord(w.value) === normWord(answerKeyNum[i].word);
+        if (ok) okWord++;
+        w.classList.toggle("good", ok);
+        w.classList.toggle("bad", !ok);
+      }
+    }
+
+    const noteAct1   = (okAlpha / nAlpha) * 10;
+    const noteComp3  = (okDigit / nNum)   * 10;
+    const noteComp4  = (okWord  / nNum)   * 10;
+    const noteAct2   = (noteComp3 + noteComp4) / 2;
+    const noteFinale = noteAct1 + noteAct2;
+
+    setCompetency("comp-alpha", noteAct1, 10);
+    setCompetency("comp-num-1", noteComp3, 10);
+    setCompetency("comp-num-2", noteComp4, 10);
+
+    noteEl.textContent = "Note finale : " + fmtNote(noteFinale) + " / 20";
+
+    return {
+      noteFinale: noteFinale, noteAct1: noteAct1, noteAct2: noteAct2,
+      noteComp3: noteComp3, noteComp4: noteComp4,
+      okAlpha: okAlpha, okDigit: okDigit, okWord: okWord,
+      nAlpha: nAlpha, nNum: nNum
+    };
+  }
+
+  /* ---------------- Bouton Corriger ---------------- */
+  correctBtn.addEventListener("click", function () {
+    if (usageCount >= MAX_USAGE) return;
+    const res = computeGrades();
+    usageCount++;
+    resultats.push({
+      note: res.noteFinale,
+      detail: res,
+      ts: new Date().toLocaleString("fr-FR")
+    });
+    renderResults();
+    saveAnswers();
+    if (usageCount >= MAX_USAGE) {
+      correctBtn.disabled = true;
+      correctBtn.textContent = "Corrections terminées";
+    }
+    setTimeout(function () {
+      alert(
+        "Bilan :\n" +
+        "Activité 1 (Alphabet) : " + fmtNote(res.noteAct1) + " / 10 (" + res.okAlpha + " / " + res.nAlpha + ")\n" +
+        "Comp. chiffres : " + fmtNote(res.noteComp3) + " / 10 (" + res.okDigit + " / " + res.nNum + ")\n" +
+        "Comp. lettres  : " + fmtNote(res.noteComp4) + " / 10 (" + res.okWord + " / " + res.nNum + ")\n" +
+        "Note finale    : " + fmtNote(res.noteFinale) + " / 20"
+      );
+    }, 60);
+  });
+
+  /* ---------------- Historique ---------------- */
+  function renderResults() {
+    if (!resultats.length) {
+      resultsSec.style.display = "none";
+      resultsBody.innerHTML = "";
+      return;
+    }
+    resultsSec.style.display = "";
+    resultsBody.innerHTML = "";
+    const tr = document.createElement("tr");
+    const tdName  = document.createElement("td"); tdName.textContent  = nameEl.value || "";
+    const tdClass = document.createElement("td"); tdClass.textContent = classEl.value || "";
+    tr.appendChild(tdName);
+    tr.appendChild(tdClass);
+    for (let i = 0; i < MAX_USAGE; i++) {
+      const td = document.createElement("td");
+      td.textContent = resultats[i] ? fmtNote(resultats[i].note) + " / 20" : "—";
+      tr.appendChild(td);
+    }
+    resultsBody.appendChild(tr);
+  }
+
+  /* ================================================================
+     RÉINITIALISATION COMPLÈTE (sans rechargement de page)
+     ================================================================ */
+  function clearAllInputs() {
+    document.querySelectorAll(".answer-input").forEach(function (inp) {
+      inp.value = "";
+      inp.classList.remove("good", "bad");
+    });
+  }
+
+  function resetCompetencies() {
+    ["comp-alpha", "comp-num-1", "comp-num-2"].forEach(function (id) {
+      const row = $(id);
+      if (!row) return;
+      row.querySelectorAll(".c-na, .c-eca, .c-a").forEach(function (c) {
+        c.classList.remove("active");
+        c.textContent = "";
+        c.removeAttribute("aria-label");
+      });
+    });
+  }
+
+  function resetEvaluation() {
+    /* 1) arrêt du chrono en cours */
+    if (chronoTimer) { clearTimeout(chronoTimer); chronoTimer = null; }
+    if (saveTimer)   { clearTimeout(saveTimer);   saveTimer = null; }
+    try { window.speechSynthesis.cancel(); } catch (e) {}
+
+    /* 2) purge du stockage propre à l'évaluation */
+    lsClearEval();
+
+    /* 3) remise à zéro de l'état */
+    usageCount     = 0;
+    resultats      = [];
+    evalWarned     = false;
+    timeoutHandled = false;
+
+    /* 4) nouvel ordre aléatoire (nouvel essai = nouvelle série) */
+    const alphaOrder = shuffle("abcdefghijklmnopqrstuvwxyz".split(""));
+    const numOrder   = shuffle(numbersList.slice());
+    lsSet("evalOrderAlpha", JSON.stringify(alphaOrder));
+    lsSet("evalOrderNum",   JSON.stringify(numOrder));
+    answerKeyAlpha = alphaOrder.slice();
+    answerKeyNum   = numOrder.map(function (n) {
+      return { digit: String(n), word: numbersDict[n] };
+    });
+    buildActivityAlpha(alphaOrder);
+    buildActivityNum(numOrder);
+
+    /* 5) vidage de l'interface */
+    clearAllInputs();
+    resetCompetencies();
+    noteEl.textContent = "Note finale : - / 20";
+    correctBtn.disabled = false;
+    correctBtn.textContent = "Corriger l'évaluation";
+    renderResults();
+
+    /* 6) redémarrage du compte à rebours à 30:00 */
+    evalStartTime = Date.now();
+    lsSet("evalStartTime", String(evalStartTime));
+    chronoEl.classList.remove("warn", "danger");
+    chronoEl.textContent = "Temps restant : 30:00";
+    saveAnswers();
+    updateChrono();
+  }
+
+  /* Fin de temps : confirmation puis réinitialisation */
+  function handleTimeout() {
+    if (timeoutHandled) return;
+    timeoutHandled = true;
+
+    if (chronoTimer) { clearTimeout(chronoTimer); chronoTimer = null; }
+    chronoEl.textContent = "Temps restant : 00:00";
+    chronoEl.classList.remove("warn");
+    chronoEl.classList.add("danger");
+
+    /* confirm() bloquant : OK => reset, Annuler => on redemande */
+    const ok = window.confirm("Confirmer la suppression des réponses et la mise à zéro de la page");
+    if (ok) {
+      resetEvaluation();
+    } else {
+      /* L'élève a annulé : la page reste bloquée à 00:00,
+         on repropose la confirmation après 5 s. */
+      timeoutHandled = false;
+      setTimeout(handleTimeout, 5000);
+    }
+  }
+
+  /* Bouton manuel */
+  resetBtn.addEventListener("click", function () {
+    if (window.confirm("Confirmer la suppression des réponses et la mise à zéro de la page")) {
+      resetEvaluation();
+    }
+  });
+
+  /* ---------------- Chrono ---------------- */
+  function updateChrono() {
+    if (evalStartTime == null) return;
+
+    const elapsed   = (Date.now() - evalStartTime) / 1000;
+    const remaining = Math.max(0, DURATION_S - elapsed);
+
+    if (remaining <= 0) {
+      handleTimeout();
+      return;
+    }
+
+    /* Alerte unique quand il reste 5 minutes */
+    if (!evalWarned && remaining <= WARN_REMAIN_S) {
+      evalWarned = true;
+      lsSet("evalWarned", "true");
+      showNonBlocking("⚠️ Il vous reste 5 minutes !");
+    }
+
+    const mm = Math.floor(remaining / 60);
+    const ss = Math.floor(remaining % 60);
+    chronoEl.textContent = "Temps restant : " +
+      String(mm).padStart(2, "0") + ":" + String(ss).padStart(2, "0");
+
+    chronoEl.classList.remove("warn", "danger");
+    if (remaining < 5 * 60)       chronoEl.classList.add("danger");
+    else if (remaining < 10 * 60) chronoEl.classList.add("warn");
+
+    chronoTimer = setTimeout(updateChrono, 1000);
+  }
+
+  function showNonBlocking(msg) {
+    const div = document.createElement("div");
+    div.textContent = msg;
+    div.style.cssText =
+      "position:fixed;top:10px;left:50%;transform:translateX(-50%);" +
+      "background:#f39c12;color:#fff;padding:10px 18px;border-radius:6px;" +
+      "font-weight:700;z-index:9998;box-shadow:0 2px 8px rgba(0,0,0,0.2);";
+    document.body.appendChild(div);
+    setTimeout(function () {
+      if (div && div.parentNode) div.parentNode.removeChild(div);  /* CORRECTIF */
+    }, 6000);
+  }
+
+  /* ---------------- En-tête : sauvegarde ---------------- */
+  [nameEl, classEl, dateEl].forEach(function (el) {
+    el.addEventListener("input", function () {
+      scheduleSaveAnswers();
+      if (resultats.length) renderResults();  /* CORRECTIF : rafraîchit nom/classe */
+    });
+  });
+
+  /* ================================================================
+     INITIALISATION
+     ================================================================ */
+
+  /* 1) Heure de début */
+  const storedStart = parseFloat(lsGet("evalStartTime"));
+  if (Number.isFinite(storedStart) && storedStart > 0 && storedStart <= Date.now()) {
+    evalStartTime = storedStart;
+  } else {
+    evalStartTime = Date.now();
+    lsSet("evalStartTime", String(evalStartTime));
+  }
+
+  /* 2) Alerte déjà affichée ? */
+  evalWarned = (lsGet("evalWarned") === "true");
+
+  /* 3) Ordre des questions (figé entre rechargements) */
+  let alphaOrder = null, numOrder = null;
+  try {
+    const arrA = JSON.parse(lsGet("evalOrderAlpha"));
+    const arrN = JSON.parse(lsGet("evalOrderNum"));
+    if (Array.isArray(arrA) && arrA.length === ALPHA_COUNT &&
+        Array.isArray(arrN) && arrN.length === NUM_COUNT) {
+      alphaOrder = arrA;
+      numOrder   = arrN;
+    }
+  } catch (e) { /* fallback */ }
+
+  if (!alphaOrder) {
+    alphaOrder = shuffle("abcdefghijklmnopqrstuvwxyz".split(""));
+    lsSet("evalOrderAlpha", JSON.stringify(alphaOrder));
+  }
+  if (!numOrder) {
+    numOrder = shuffle(numbersList.slice());
+    lsSet("evalOrderNum", JSON.stringify(numOrder));
+  }
+
+  /* 4) Clés de réponse */
+  answerKeyAlpha = alphaOrder.slice();
+  answerKeyNum   = numOrder.map(function (n) {
+    return { digit: String(n), word: numbersDict[n] };
+  });
+
+  /* 5) Construction */
+  buildActivityAlpha(alphaOrder);
+  buildActivityNum(numOrder);
+
+  /* 6) Restauration */
+  let savedObj = null;
+  try { savedObj = JSON.parse(lsGet("evalAnswers")); } catch (e) { savedObj = null; }
+  if (savedObj && typeof savedObj === "object") {
+    if (typeof savedObj.name === "string") nameEl.value  = savedObj.name;
+    if (typeof savedObj.cls  === "string") classEl.value = savedObj.cls;
+    if (typeof savedObj.date === "string") dateEl.value  = savedObj.date;
+    const uc = parseInt(savedObj.usageCount, 10);           /* CORRECTIF */
+    if (Number.isFinite(uc) && uc >= 0) usageCount = Math.min(uc, MAX_USAGE);
+    if (Array.isArray(savedObj.resultats)) resultats = savedObj.resultats.slice(0, MAX_USAGE);
+    applyAnswers(savedObj.answers);
+  }
+
+  if (usageCount >= MAX_USAGE) {
+    correctBtn.disabled = true;
+    correctBtn.textContent = "Corrections terminées";
+  }
+  renderResults();
+
+  /* 7) Démarrage du chrono — dernière instruction.
+        Si le temps est déjà écoulé, updateChrono() appelle handleTimeout()
+        une seule fois (plus de double déclenchement). */
+  updateChrono();
+
+})();
+</script>
+</body>
+</html>
